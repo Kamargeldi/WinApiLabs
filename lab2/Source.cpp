@@ -110,37 +110,54 @@ VOID OnPaint(HWND hWnd)
 	int height = wsize.bottom - wsize.top;
 	int width = wsize.right - wsize.left;
 
-	SetDCBrushColor(hdc, RGB(255,0,0));
-
+	SetDCPenColor(hdc, RGB(0, 255, 0));
 	// header
 	MoveToEx(hdc, 0, 50, NULL);
 	LineTo(hdc, width, 50);
 	
 	//1
 	MoveToEx(hdc, width / 4, 0, NULL);
-	LineTo(hdc, width / 4, height);
+	LineTo(hdc, width / 4, height - 45);
 	//2
 	MoveToEx(hdc, width / 4 * 2, 0, NULL);
-	LineTo(hdc, width / 4 * 2, height);
+	LineTo(hdc, width / 4 * 2, height - 45);
 	//3
 	MoveToEx(hdc, width / 4 * 3, 0, NULL);
-	LineTo(hdc, width / 4 * 3, height);
+	LineTo(hdc, width / 4 * 3, height - 45);
 	//4
 	MoveToEx(hdc, width, 0, NULL);
-	LineTo(hdc, width, height);
+	LineTo(hdc, width, height - 45);
 	
 	SetTextColor(hdc, RGB(255, 40, 40));
 
 	static _TCHAR printStr[1000] = L"Name, Surname, FatherName";
+	static _TCHAR printStr2[1000] = L"skldj sdfsfglhxlkj lkjhgsriunjflk fsdlkjvh vfsdflkjhs dfsdfv  sljdfkgh sdlfkjhgsl kdfj hgslkdjf ghlskdj fhglkdsj fhlgksjdh f glksjd fhlgksdj hfklgjs dfhglkjsd hfglkjsd fhklgjsd fhjklsgd hfgslkjd hf klgjsd hfklgj shdflkgj hsdlkfj hglksdj hklgjsd hfglksdjf slkdj ghlskdjf hgsdf vsdf";
 	RECT textBlocks;
 	textBlocks.left = 10;
 	textBlocks.top = 10;
-	textBlocks.right = width / 4;
+	textBlocks.right = width / 4 - 10;
+	textBlocks.bottom = 40;
 	DrawText(hdc, printStr, wcslen(printStr), &textBlocks, DT_WORDBREAK);
+	
 	textBlocks.top = 55;
-	textBlocks.bottom = height - 5;
-	wcscpy_s(printStr, 1000, L"skldj sdfsfglhxlkj lkjhgsriunjflk fsdlkjvh vfsdflkjhs dfsdfv sdf vsdf");
+	textBlocks.bottom = height - 45;
+	DrawText(hdc, printStr2, wcslen(printStr2), &textBlocks, DT_WORDBREAK);
+	
+	textBlocks.left = width / 4 + 10;
+	textBlocks.bottom = 40;
+	textBlocks.top = 10;
+	textBlocks.right = width / 4 * 2 - 10;
 	DrawText(hdc, printStr, wcslen(printStr), &textBlocks, DT_WORDBREAK);
+
+	SetTextColor(hdc, RGB(0, 50, 0));
+	HFONT hfont = CreateFont(15, 7, 0, 0, FW_DONTCARE,
+		FALSE, FALSE, FALSE, ANSI_CHARSET,
+		OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DRAFT_QUALITY, VARIABLE_PITCH,
+		TEXT("Cooper Black"));
+	SelectObject(hdc, hfont);
+	textBlocks.top = 55;
+	textBlocks.bottom = height - 45;
+	DrawText(hdc, printStr2, wcslen(printStr2), &textBlocks, DT_WORDBREAK);
 
 	EndPaint(hWnd, &ps);
 }
