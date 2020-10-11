@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StaticImportApp", "StaticIm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicImport", "DynamicImport\DynamicImport.vcxproj", "{C055F57B-E02F-427E-8E37-7C404F7829F8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllInjector", "DllInjector\DllInjector.vcxproj", "{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,16 @@ Global
 		{C055F57B-E02F-427E-8E37-7C404F7829F8}.Release|x64.Build.0 = Release|x64
 		{C055F57B-E02F-427E-8E37-7C404F7829F8}.Release|x86.ActiveCfg = Release|Win32
 		{C055F57B-E02F-427E-8E37-7C404F7829F8}.Release|x86.Build.0 = Release|Win32
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Debug|x64.ActiveCfg = Debug|x64
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Debug|x64.Build.0 = Debug|x64
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Debug|x86.ActiveCfg = Debug|Win32
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Debug|x86.Build.0 = Debug|Win32
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Release|Any CPU.ActiveCfg = Release|Win32
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Release|x64.ActiveCfg = Release|x64
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Release|x64.Build.0 = Release|x64
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Release|x86.ActiveCfg = Release|Win32
+		{43D1FEA2-AB0B-4ACB-B108-257C4887BCEC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
