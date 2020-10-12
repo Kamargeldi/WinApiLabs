@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileSorter", "FileSorter\FileSorter.vcxproj", "{6634A497-177B-4916-B78C-D8DEAAB06C6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Debug|x64.ActiveCfg = Debug|x64
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Debug|x64.Build.0 = Debug|x64
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Debug|x86.ActiveCfg = Debug|Win32
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Debug|x86.Build.0 = Debug|Win32
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Release|x64.ActiveCfg = Release|x64
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Release|x64.Build.0 = Release|x64
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Release|x86.ActiveCfg = Release|Win32
+		{6634A497-177B-4916-B78C-D8DEAAB06C6F}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78FE8BFF-A9EC-48D2-923E-6120FDC25767}
+	EndGlobalSection
+EndGlobal
