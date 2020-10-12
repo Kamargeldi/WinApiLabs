@@ -65,3 +65,8 @@ __declspec(dllexport) char* __stdcall GetAddressOfData(DWORD pid, const char* da
     return 0;
 }
 
+
+__declspec(dllexport) void __stdcall PrintString(char* str)
+{
+    std::cout << str;
+}

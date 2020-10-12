@@ -1,84 +1,75 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include <Windows.h>
+#include <TlHelp32.h>
 
 
 
-BOOL WINAPI Inject(DWORD processID, PCWSTR sourceDLL)
-{
-    BOOL success = false;
-    HANDLE targetProcess = NULL, createdThread = NULL;
-    PWSTR pszLibFileRemote = NULL;
-    __try
+
+
+int main() {
+    // The DLL path we want to inject and the target process id.
+    const char* dllpath = "C:\\Users\\Kamar\\Desktop\\WinApiLabs\\Debug\\MyLibrary.dll";
+    int processID = 19824;
+
+    printf("#### Starting ####\n");
+
+    // Open target process handle    
+    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
+    if (hProcess == NULL) {
+        printf("[!] Unable to find the target process id: %d\n", processID);
+        return 1;
+    }
+    printf("[+] Open target process handle\n");
+
+    // Getting targt memory address for the dll path
+    LPVOID dllpathMemoryAddr = VirtualAllocEx(hProcess, NULL, strlen(dllpath), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    if (dllpathMemoryAddr == NULL) {
+        printf("[!] Unable to get memory address of target process for the dllpath");
+        return 1;
+    }
+    printf("[+] Allocate the memory address to store the dllpath\n");
+
+    // Writing the dll path to the target memory address
+    BOOL succeedWrite = WriteProcessMemory(hProcess, dllpathMemoryAddr, dllpath, strlen(dllpath), NULL);
+    if (!succeedWrite) {
+        printf("[!] Unable to write to the memory address of target process the dllpath\n");
+        return 1;
+    }
+    printf("[+] Writed the dllpath to memory\n");
+
+    // Getting LoadLibreryA address
+    FARPROC loadLibAddr = GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "LoadLibraryA");
+    if (loadLibAddr == NULL) {
+        printf("[!] Unable to get the memory address of LoadLibraryA function\n");
+        return 1;
+    }
+    printf("[+] Allocate the memory address to LoadLibraryA function\n");
+
+    // Create remote thread on the remote process to load the dll
+    HANDLE rThread = CreateRemoteThread(hProcess, NULL, strlen(dllpath), (LPTHREAD_START_ROUTINE)loadLibAddr, dllpathMemoryAddr, NULL, NULL);
+    if (rThread == NULL) {
+        printf("[!] Unable to create thread to execute the LoadLibraryA function\n the error: %u\n", GetLastError());
+        return 1;
+    }
+    printf("#### DLL INJECTED ####\n");
+
+    
+    Sleep(1000);
+
+    const char* printMessage = "Remote call ;)";
+    LPVOID funcParam = VirtualAllocEx(hProcess, NULL, strlen(printMessage), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    succeedWrite = WriteProcessMemory(hProcess, funcParam, printMessage, strlen(printMessage), NULL);
+    std::cout << "Succeded..." << std::endl;
+
+    HMODULE mHandle = 0;
+    while (!mHandle)
     {
-        std::cout << "Process ID: " << processID << std::endl;
-        targetProcess = OpenProcess(
-            PROCESS_QUERY_INFORMATION | PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE,
-            FALSE, processID);
-        if (targetProcess == NULL)
-        {
-            std::cout << "ERROR: " << GetLastError();
-            MessageBox(NULL, L"Unable to open process.", L"Error", MB_OK);
-            __leave;
-        }
-
-        int cch = 1 + lstrlenW(sourceDLL);
-        int cb = cch * sizeof(wchar_t);
-
-        pszLibFileRemote = (PWSTR)VirtualAllocEx(targetProcess, NULL, cb, MEM_COMMIT, PAGE_READWRITE);
-        if (pszLibFileRemote == NULL)
-        {
-            MessageBox(NULL, L"Could not allocate dll pathname in target process.", L"Error", MB_OK);
-            __leave;
-        }
-
-        if (!WriteProcessMemory(targetProcess, pszLibFileRemote, (PVOID)sourceDLL, cb, NULL))
-        {
-            MessageBox(NULL, L"Could not write dll pathname in target process.", L"Error", MB_OK);
-            __leave;
-        }
-
-        PTHREAD_START_ROUTINE pfnThreadRtn = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(L"Kernel32"), "LoadLibraryW");
-
-        if (pfnThreadRtn == NULL)
-        {
-            MessageBox(NULL, L"Error finding LoadLibraryW address.", L"Error", MB_OK);
-            __leave;
-        }
-
-        createdThread = CreateRemoteThread(targetProcess, NULL, 0, pfnThreadRtn, pszLibFileRemote, 0, NULL);
-        if (createdThread == NULL)
-        {
-            __leave;
-        }
-
-        WaitForSingleObject(createdThread, INFINITE);
-        success = true;
-
+        mHandle = GetModuleHandle(TEXT("MyLibrary.dll"));
     }
-    __finally { 
-        if (pszLibFileRemote != NULL)
-            VirtualFreeEx(targetProcess, pszLibFileRemote, 0, MEM_RELEASE);
-        if (createdThread != NULL)
-            CloseHandle(createdThread);
-        if (targetProcess != NULL)
-            CloseHandle(targetProcess);
-    }
+    FARPROC prntstr = GetProcAddress(mHandle, "PrintString");
 
-    return success;
-}
+    HANDLE remThread = CreateRemoteThread(hProcess, NULL, strlen(printMessage), (LPTHREAD_START_ROUTINE)prntstr, funcParam, NULL, NULL);
+    
 
-
-int main(int argc, char* argv[])
-{
-    PCWSTR srcDll = L"C:\\Users\\Kamar\\Desktop\\WinApiLabs\\Debug\\MyLibrary.dll";
-    DWORD processID = 5900;
-    bool injected = Inject(processID, srcDll);
-    if (injected)
-    {
-        std::cout << "Injection successful" << std::endl;
-        
-    }
-    system("PAUSE");
     return 0;
 }
