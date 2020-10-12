@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+__declspec(dllexport) void __stdcall PrintString(const char* str);
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -66,7 +67,7 @@ __declspec(dllexport) char* __stdcall GetAddressOfData(DWORD pid, const char* da
 }
 
 
-__declspec(dllexport) void __stdcall PrintString(char* str)
+__declspec(dllexport) void __stdcall PrintString(const char* str)
 {
     std::cout << str;
 }

@@ -1,15 +1,20 @@
 ﻿#include <iostream>
 #include <Windows.h>
 #include <TlHelp32.h>
+#include <tchar.h>
+#include <stdio.h>
+#include <psapi.h>
+#include <string.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <memory.h>
 
-
-
-
+using namespace std;
 
 int main() {
     // The DLL path we want to inject and the target process id.
     const char* dllpath = "C:\\Users\\Kamar\\Desktop\\WinApiLabs\\Debug\\MyLibrary.dll";
-    int processID = 19824;
+    int processID = 13540;
 
     printf("#### Starting ####\n");
 
@@ -55,21 +60,15 @@ int main() {
 
     
     Sleep(1000);
-
-    const char* printMessage = "Remote call ;)";
-    LPVOID funcParam = VirtualAllocEx(hProcess, NULL, strlen(printMessage), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-    succeedWrite = WriteProcessMemory(hProcess, funcParam, printMessage, strlen(printMessage), NULL);
-    std::cout << "Succeded..." << std::endl;
-
-    HMODULE mHandle = 0;
-    while (!mHandle)
-    {
-        mHandle = GetModuleHandle(TEXT("MyLibrary.dll"));
-    }
-    FARPROC prntstr = GetProcAddress(mHandle, "PrintString");
-
-    HANDLE remThread = CreateRemoteThread(hProcess, NULL, strlen(printMessage), (LPTHREAD_START_ROUTINE)prntstr, funcParam, NULL, NULL);
     
+    
+    system("pause");
 
     return 0;
 }
+
+
+
+
+
+
