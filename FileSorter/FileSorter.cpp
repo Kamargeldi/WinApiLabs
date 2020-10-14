@@ -1,13 +1,26 @@
 ﻿#include <iostream>
-#include <Windows.h>
-#include <concurrent_queue.h>
+#include "ConcurrentQueue.h"
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-	
-	Concurrency::concurrent_queue<void*> queue;
-	
 
+	ConcurrentQueue<int> queue(2);
+	for (int i = 0; i < 5; i++)
+		queue.Enqueue(i);
+
+	for (int i = 10; i < 20; i++)
+		queue.Enqueue(i);
+
+	int element;
+	for (int i = 0; i < 100; i++)
+	{
+		if (queue.TryDequeue(element))
+		{
+			cout << element << endl;
+		}
+	}
+
+	return 0;
 }

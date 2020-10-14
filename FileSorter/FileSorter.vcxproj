@@ -139,7 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConcurrentQueue.cpp" />
     <ClCompile Include="FileSorter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConcurrentQueue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
