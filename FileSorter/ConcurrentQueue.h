@@ -94,7 +94,10 @@ bool ConcurrentQueue<T>::TryDequeue(T& result)
 {
     EnterCriticalSection(&locker);
     if (size == 0)
+    {
+        LeaveCriticalSection(&locker);
         return false;
+    }
     T res = this->array[this->head];
     this->head = (this->head + 1) % this->arrayLength;
     this->size--;
