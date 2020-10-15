@@ -142,7 +142,7 @@ template <typename T>
 int ConcurrentQueue<T>::Size()
 {
     EnterCriticalSection(&locker);
-    T result = this->size;
+    int result = this->size;
     LeaveCriticalSection(&locker);
     return result;
 }

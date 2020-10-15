@@ -1,26 +1,75 @@
 ﻿#include <iostream>
 #include "ConcurrentQueue.h"
 
+
 using namespace std;
+
+void threadStart(int parameter);
+bool running = true;
+typedef void (*Func)(int);
+ConcurrentQueue<Func> queue(8);
+void threadTask(int parameter);
+CRITICAL_SECTION consoleBlock;
+
 
 int main(int argc, char* argv[])
 {
+	InitializeCriticalSection(&consoleBlock);
+	SYSTEM_INFO sysInfo;
+	GetSystemInfo(&sysInfo);
+	int threadCount = sysInfo.dwNumberOfProcessors * 4;
+	
+	HANDLE* threads = (HANDLE*)malloc(sizeof(HANDLE) * threadCount);
+	
+	for (int i = 0; i < 50; i++)
+		queue.Enqueue((Func)threadTask);
 
-	ConcurrentQueue<int> queue(2);
-	for (int i = 0; i < 5; i++)
-		queue.Enqueue(i);
 
-	for (int i = 10; i < 20; i++)
-		queue.Enqueue(i);
-
-	int element;
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < threadCount; i++)
 	{
-		if (queue.TryDequeue(element))
-		{
-			cout << element << endl;
-		}
+		threads[i] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)threadStart, NULL, 0, NULL);
 	}
 
+
+	while (!queue.IsEmpty())
+	{
+		Sleep(40);
+	}
+
+	running = false;
+	WaitForMultipleObjects(threadCount, threads, true, INFINITE);
+	free(threads);
 	return 0;
+}
+
+
+
+
+
+void threadStart(int parameter)
+{
+	Func delegate;
+	while (running)
+	{
+		if (queue.TryDequeue(delegate))
+		{
+			delegate(GetCurrentThreadId());
+		}
+		else
+		{
+			Sleep(40);
+		}
+		
+	}
+}
+
+
+
+
+
+void threadTask(int parameter)
+{
+	EnterCriticalSection(&consoleBlock);
+	cout << "thread id: " << parameter << endl;
+	LeaveCriticalSection(&consoleBlock);
 }
